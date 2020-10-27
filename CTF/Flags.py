@@ -2,6 +2,8 @@ import pygame
 import pygame.locals
 import time
 
+from Utils import LOAD_IMG
+
 class Flag(pygame.sprite.Sprite):
     def __init__(self, img, spawnX, spawnY):
         pygame.sprite.Sprite.__init__(self)
@@ -16,9 +18,9 @@ class Flag(pygame.sprite.Sprite):
 
 class BlueFlag(Flag):
     def __init__(self):
-        Flag.__init__(self, 'Sprites/Flags/BlueFlag.png', 0, 0)
+        Flag.__init__(self, LOAD_IMG('Flags/BlueFlag.png'), 0, 0)
 
 
 class RedFlag(Flag):
     def __init__(self):
-        Flag.__init__(self, 'Sprites/Flags/RedFlag.png', 768, 768)
+        Flag.__init__(self, LOAD_IMG('Flags/RedFlag.png'), 768, 768)

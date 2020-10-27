@@ -2,10 +2,12 @@ import pygame
 import pygame.locals
 import time
 
+from Utils import LOAD_IMG
+
 class HomeBase(pygame.sprite.Sprite):
     def __init__(self, spawnX, spawnY):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load('Sprites/HomeBases/HomeBase.png')
+        self.image = pygame.image.load(LOAD_IMG('HomeBases/HomeBase.png'))
         self.rect = self.image.get_rect()
         self.spawn = {'x': spawnX, 'y': spawnY}
         self.rect.x, self.rect.y = self.spawn['x'], self.spawn['y']  # setting the spawn

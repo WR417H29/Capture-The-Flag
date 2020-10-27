@@ -2,10 +2,12 @@ import time
 
 import pygame
 import pygame.locals
+
 from Players import Player, BluePlayer, RedPlayer
 from Flags import Flag, BlueFlag, RedFlag
 from Homebase import HomeBase, BlueHomeBase, RedHomeBase
 
+from Utils import LOAD_IMG
 
 colours = {
     'WHITE': (255, 255, 255),
@@ -19,11 +21,11 @@ colours = {
 
 window = pygame.display.set_mode([800, 800])
 pygame.display.set_caption('Capture the Flag')
-pygame.display.set_icon(pygame.image.load('Sprites/Flags/WhiteFlag.png'))
+pygame.display.set_icon(pygame.image.load(LOAD_IMG('Flags/WhiteFlag.png')))
 window.fill(colours['WHITE'])
 
-bluePlayer = BluePlayer('Sprites/Players/BluePlayerRight.png', 0, 0, False)
-redPlayer = RedPlayer('Sprites/Players/RedPlayerLeft.png', 768, 768, False)
+bluePlayer = BluePlayer(LOAD_IMG('Players/BluePlayerRight.png'), 0, 0, False)
+redPlayer = RedPlayer(LOAD_IMG('Players/RedPlayerLeft.png'), 768, 768, False)
 players = pygame.sprite.Group([bluePlayer, redPlayer])
 
 blueFlag = BlueFlag()
@@ -48,13 +50,13 @@ while True:
     for item in blueFlagGrab:
         if item == redPlayer:
             blueFlag.kill()
-            redPlayer = RedPlayer('Sprites/Players/RedPlayerBlueFlag.png', redPlayer.getRectX(), redPlayer.getRectY(), True)
+            redPlayer = RedPlayer(LOAD_IMG('Players/RedPlayerBlueFlag.png'), redPlayer.getRectX(), redPlayer.getRectY(), True)
 
     redFlagGrab = pygame.sprite.spritecollide(redFlag, players, False)
     for item in redFlagGrab:
         if item == bluePlayer:
             redFlag.kill()
-            bluePlayer = BluePlayer('Sprites/Players/BluePlayerRedFlag.png', bluePlayer.getRectX(), bluePlayer.getRectY(), True)
+            bluePlayer = BluePlayer(LOAD_IMG('Players/BluePlayerRedFlag.png'), bluePlayer.getRectX(), bluePlayer.getRectY(), True)
 
 
 
@@ -71,14 +73,14 @@ while True:
             quit()
 
     if bluePlayer.getRectX() >= 400:
-        bluePlayer = BluePlayer('Sprites/Players/BluePlayerLeft.png', bluePlayer.getRectX(), bluePlayer.getRectY(), False)
+        bluePlayer = BluePlayer(LOAD_IMG('Players/BluePlayerLeft.png'), bluePlayer.getRectX(), bluePlayer.getRectY(), False)
     if bluePlayer.getRectX() < 400:
-        bluePlayer = BluePlayer('Sprites/Players/BluePlayerRight.png', bluePlayer.getRectX(), bluePlayer.getRectY(), False)
+        bluePlayer = BluePlayer(LOAD_IMG('Players/BluePlayerRight.png'), bluePlayer.getRectX(), bluePlayer.getRectY(), False)
 
     if redPlayer.getRectX() >= 400:
-        redPlayer = RedPlayer('Sprites/Players/RedPlayerLeft.png', redPlayer.getRectX(), redPlayer.getRectY(), False)
+        redPlayer = RedPlayer(LOAD_IMG('Players/RedPlayerLeft.png'), redPlayer.getRectX(), redPlayer.getRectY(), False)
     if redPlayer.getRectX() < 400:
-        redPlayer = RedPlayer('Sprites/Players/RedPlayerRight.png', redPlayer.getRectX(), redPlayer.getRectX(), False)
+        redPlayer = RedPlayer(LOAD_IMG('Players/RedPlayerRight.png'), redPlayer.getRectX(), redPlayer.getRectX(), False)
 
     players = pygame.sprite.Group([bluePlayer, redPlayer])
     players.update(keysPressed)
