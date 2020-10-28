@@ -58,18 +58,20 @@ class Player(pygame.sprite.Sprite):
     def getHasflag(self):
         return self.hasFlag
 
+    def getDirection(self):
+        return self.direction
 
 class BluePlayer(Player):
-    def __init__(self, img, spawnX, spawnY, hasFlag):
+    def __init__(self, img, spawnX, spawnY, hasFlag, direction):
         Player.__init__(self, img,
                         pygame.locals.K_w, pygame.locals.K_s,
-                        pygame.locals.K_d, pygame.locals.K_a, spawnX, spawnY, 1,
+                        pygame.locals.K_d, pygame.locals.K_a, spawnX, spawnY, direction,
                         hasFlag)  # initialising the parent class
 
 
 class RedPlayer(Player):
-    def __init__(self, img, spawnX, spawnY, hasFlag):
+    def __init__(self, img, spawnX, spawnY, hasFlag, direction):
         Player.__init__(self, img,
                         pygame.locals.K_UP, pygame.locals.K_DOWN,
-                        pygame.locals.K_RIGHT, pygame.locals.K_LEFT, spawnX, spawnY, 3,
+                        pygame.locals.K_RIGHT, pygame.locals.K_LEFT, spawnX, spawnY, direction,
                         hasFlag)  # initialising the parent class
