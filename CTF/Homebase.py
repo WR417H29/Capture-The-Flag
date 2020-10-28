@@ -3,9 +3,9 @@ import pygame.locals
 import time
 
 class HomeBase(pygame.sprite.Sprite):
-    def __init__(self, spawnX, spawnY):
+    def __init__(self, img, spawnX, spawnY):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load('Sprites/HomeBases/HomeBase.png')
+        self.image = pygame.image.load(img)
         self.rect = self.image.get_rect()
         self.spawn = {'x': spawnX, 'y': spawnY}
         self.rect.x, self.rect.y = self.spawn['x'], self.spawn['y']  # setting the spawn
@@ -16,9 +16,9 @@ class HomeBase(pygame.sprite.Sprite):
 
 class BlueHomeBase(HomeBase):
     def __init__(self):
-        HomeBase.__init__(self, 0, 0)
+        HomeBase.__init__(self, 'Sprites/HomeBases/BlueHomeBase.png', 0, 0)
 
 
 class RedHomeBase(HomeBase):
     def __init__(self):
-        HomeBase.__init__(self, 736, 736)
+        HomeBase.__init__(self, 'Sprites/HomeBases/RedHomeBase.png', 736, 736)
