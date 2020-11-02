@@ -1,9 +1,11 @@
-import pygame
-import pygame.locals
 import time
 
+import pygame
+import pygame.locals
+
+
 class Player(pygame.sprite.Sprite):
-    def __init__(self, img, fwd, bwd, cw, ccw, spawnX, spawnY, direction, hasFlag):
+    def __init__(self, img, fwd, bwd, cw, ccw, spawnX, spawnY, direction, hasFlag, lives):
         pygame.sprite.Sprite.__init__(self)  # initialising parent class
         self.image = pygame.image.load(img)  # loading sprite
         self.rect = self.image.get_rect()  # getting the size of the image
@@ -13,6 +15,7 @@ class Player(pygame.sprite.Sprite):
         self.spawn = {'x': spawnX, 'y': spawnY}  # setting spawn variables
         self.rect.x, self.rect.y = self.spawn['x'], self.spawn['y']  # setting the spawn
         self.hasFlag = hasFlag
+        self.lives = lives
 
     def update(self, keysPressed):
         # ~ Movement ~ #
@@ -61,17 +64,21 @@ class Player(pygame.sprite.Sprite):
     def getDirection(self):
         return self.direction
 
+    def getLives(self):
+        return self.lives
+
+
 class BluePlayer(Player):
-    def __init__(self, img, spawnX, spawnY, hasFlag, direction):
+    def __init__(self, img, spawnX, spawnY, hasFlag, direction, lives):
         Player.__init__(self, img,
                         pygame.locals.K_w, pygame.locals.K_s,
                         pygame.locals.K_d, pygame.locals.K_a, spawnX, spawnY, direction,
-                        hasFlag)  # initialising the parent class
+                        hasFlag, lives)  # initialising the parent class
 
 
 class RedPlayer(Player):
-    def __init__(self, img, spawnX, spawnY, hasFlag, direction):
+    def __init__(self, img, spawnX, spawnY, hasFlag, direction, lives):
         Player.__init__(self, img,
                         pygame.locals.K_UP, pygame.locals.K_DOWN,
                         pygame.locals.K_RIGHT, pygame.locals.K_LEFT, spawnX, spawnY, direction,
-                        hasFlag)  # initialising the parent class
+                        hasFlag, lives)  # initialising the parent class
