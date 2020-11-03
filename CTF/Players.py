@@ -14,7 +14,7 @@ class Player(pygame.sprite.Sprite):
         self.controls = {'forward': fwd, 'backward': bwd, 'clockwise': cw,
                          'counterclockwise': ccw}  # declaring the controls
         self.spawn = {'x': spawnX, 'y': spawnY}  # setting spawn variables
-        self.rect.x, self.rect.y = self.spawn['x'], self.spawn['y']  # setting the spawn
+        self.rect.x, self.rect.y = spawnX, spawnY  # setting the spawn
         self.hasFlag = hasFlag
         self.lives = lives
         self.arrow = self.arrowOG
@@ -51,6 +51,9 @@ class Player(pygame.sprite.Sprite):
 
         time.sleep(0.05)
 
+    def updateImage(self, image):
+        self.image = pygame.image.load(image)
+
     def getRectX(self):
         return self.rect.x
 
@@ -74,6 +77,7 @@ class Player(pygame.sprite.Sprite):
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)  # drawing the players to the screen
+        '''
         if self.direction == 0:
             self.arrow = pygame.transform.rotate(self.arrowOG, 0)
         if self.direction == 1:
@@ -83,7 +87,7 @@ class Player(pygame.sprite.Sprite):
         if self.direction == 3:
             self.arrow = pygame.transform.rotate(self.arrowOG, 90)
         screen.blit(self.arrow, (self.rect.x, self.rect.top))
-
+        '''
 
 class BluePlayer(Player):
     def __init__(self, img, spawnX, spawnY, hasFlag, direction, lives):

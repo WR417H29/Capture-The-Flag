@@ -85,20 +85,20 @@ while True:  # running a game loop
 
     if bluePlayer.getRectX() < redPlayer.getRectX():  # if the blue player is on the left hand side of the red player, change the sprites to look at each other
         if not bluePlayer.getHasflag() or not redPlayer.getHasflag():
-            bluePlayer = BluePlayer('Sprites/Players/BluePlayerRight.png', bluePlayer.getRectX(), bluePlayer.getRectY(), False, bluePlayer.getDirection(), bluePlayer.getLives())
-            redPlayer = RedPlayer('Sprites/Players/RedPlayerLeft.png', redPlayer.getRectX(), redPlayer.getRectY(), False, redPlayer.getDirection(), redPlayer.getLives())
+            bluePlayer.updateImage('Sprites/Players/BluePlayerRight.png')
+            redPlayer.updateImage('Sprites/Players/RedPlayerLeft.png')
         if bluePlayer.getHasflag() or redPlayer.getHasflag():
-            bluePlayer = BluePlayer('Sprites/Players/BluePlayerRedFlag.png', bluePlayer.getRectX(), bluePlayer.getRectY(), True, bluePlayer.getDirection(), bluePlayer.getLives())
-            redPlayer = RedPlayer('Sprites/Players/RedPlayerBlueFlag.png', redPlayer.getRectX(), redPlayer.getRectY(), True, redPlayer.getDirection(), redPlayer.getLives())
+            bluePlayer.updateImage('Sprites/Players/BluePlayerRedFlag.png')
+            redPlayer.updateImage('Sprites/Players/RedPlayerBlueFlag.png')
 
     if bluePlayer.getRectX() > redPlayer.getRectX():  # if the red player is on the left hand side of the blue player, change the sprites to look at each other
         if not bluePlayer.getHasflag() or not redPlayer.getHasflag():
-            bluePlayer = BluePlayer('Sprites/Players/BluePlayerLeft.png', bluePlayer.getRectX(), bluePlayer.getRectY(), False, bluePlayer.getDirection(), bluePlayer.getLives())
-            redPlayer = RedPlayer('Sprites/Players/RedPlayerRight.png', redPlayer.getRectX(), redPlayer.getRectY(), False, redPlayer.getDirection(), redPlayer.getLives())
+            bluePlayer.updateImage('Sprites/Players/BluePlayerLeft.png')
+            redPlayer.updateImage('Sprites/Players/RedPlayerRight.png')
         if bluePlayer.getHasflag() or redPlayer.getHasflag():
-            bluePlayer = BluePlayer('Sprites/Players/BluePlayerRedFlag.png', bluePlayer.getRectX(), bluePlayer.getRectY(), True, bluePlayer.getDirection(), bluePlayer.getLives())
-            redPlayer = RedPlayer('Sprites/Players/RedPlayerBlueFlag.png', redPlayer.getRectX(), redPlayer.getRectY(), True, redPlayer.getDirection(), redPlayer.getLives())
-
+            bluePlayer.updateImage('Sprites/Players/BluePlayerRedFlag.png')
+            redPlayer.updateImage('Sprites/Players/RedPlayerBlueFlag.png')
+    # ~ fix sprite swap ~ #
     players = pygame.sprite.Group([bluePlayer, redPlayer])  # redeclaring the group of players to make sure they are up to date
 
     guns.update()
