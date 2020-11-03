@@ -1,8 +1,8 @@
 import pygame.locals
+from Bullet import BlueBullets, RedBullets
 from Flags import BlueFlag, RedFlag
 from Homebase import BlueHomeBase, RedHomeBase
 from Players import BluePlayer, RedPlayer
-from Bullet import BlueBullets, RedBullets
 
 # importing all the necessary classes and behaviours
 
@@ -20,9 +20,13 @@ window = pygame.display.set_mode([800, 800])  # setting the size of the window
 pygame.display.set_caption('Capture the Flag')  # setting the name of the window
 pygame.display.set_icon(pygame.image.load('Sprites/Flags/WhiteFlag.png'))  # setting the window icon
 window.fill(colours['WHITE'])  # filling the base screen with white
+FPS = 30
+clock = pygame.time.Clock()
 
-bluePlayer = BluePlayer('Sprites/Players/BluePlayerRight.png', 0, 0, False, 1, 3)  # declaring bluePlayer as a BluePlayer iteration
-redPlayer = RedPlayer('Sprites/Players/RedPlayerLeft.png', 768, 768, False, 3, 3)  # declaring redPlayer as a RedPlayer iteration
+bluePlayer = BluePlayer('Sprites/Players/BluePlayerRight.png', 0, 0, False, 1,
+                        3)  # declaring bluePlayer as a BluePlayer iteration
+redPlayer = RedPlayer('Sprites/Players/RedPlayerLeft.png', 768, 768, False, 3,
+                      3)  # declaring redPlayer as a RedPlayer iteration
 players = pygame.sprite.Group([bluePlayer, redPlayer])  # creating a sprite group for the players
 
 blueFlag = BlueFlag()  # declaring blueFlag as a BlueFlag iteration
@@ -33,9 +37,7 @@ blueHomeBase = BlueHomeBase()  # declaring blueHomeBase as a BlueHomeBase iterat
 redHomeBase = RedHomeBase()  # declaring redHomeBase as a RedHomeBase iteration
 homebases = pygame.sprite.Group([blueHomeBase, redHomeBase])  # creating a sprite group for the players
 
-blueGun = BlueBullets(bluePlayer.getRectX(), bluePlayer.getRectY(), bluePlayer.getDirection())
-redGun = RedBullets(redPlayer.getRectX(), redPlayer.getRectY(), redPlayer.getDirection())
-guns = pygame.sprite.Group([blueGun, redGun])
+guns = pygame.sprite.Group()
 
 while True:  # running a game loop
     for event in pygame.event.get():  # checking every event happening in the loop
@@ -47,22 +49,27 @@ while True:  # running a game loop
 
     keysPressed = pygame.key.get_pressed()  # creating a list of pressed keys
 
-    '''
-    if keysPressed == blueGun.getShootKey() or keysPressed == redGun.getShootKey():
-        guns.update()
-    '''
+    if keysPressed[pygame.locals.K_q]:
+        guns.add(BlueBullets(bluePlayer.getCenterX(), (bluePlayer.getCenterY()-2), bluePlayer.getDirection()))
+
+    if keysPressed[pygame.locals.K_u]:
+        guns.add(RedBullets(redPlayer.getCenterX(), (redPlayer.getCenterY()-2), redPlayer.getDirection()))
 
     blueFlagGrab = pygame.sprite.spritecollide(blueFlag, players, False)  # checking if the blueFlag has collided with any player Sprites
     for item in blueFlagGrab:  # iterating through the list of players touching it
         if item == redPlayer:  # if the player is the red player
             blueFlag.kill()  # deleting the blueFlag sprite iteration
-            redPlayer = RedPlayer('Sprites/Players/RedPlayerBlueFlag.png', redPlayer.getRectX(), redPlayer.getRectY(), True, redPlayer.getDirection(), redPlayer.getLives())  # redeclaring the redPlayer with a new sprite of them with the flag, and setting the hasFlag value to true
+            redPlayer = RedPlayer('Sprites/Players/RedPlayerBlueFlag.png', redPlayer.getRectX(), redPlayer.getRectY(),
+                                  True, redPlayer.getDirection(),
+                                  redPlayer.getLives())  # redeclaring the redPlayer with a new sprite of them with the flag, and setting the hasFlag value to true
 
     redFlagGrab = pygame.sprite.spritecollide(redFlag, players, False)  # checking if the redFlag has collided with any player sprites
     for item in redFlagGrab:  # iterating through the list of players touching it
         if item == bluePlayer:  # if the player is the blue player
             redFlag.kill()  # deleting the redFlag sprite iteration
-            bluePlayer = BluePlayer('Sprites/Players/BluePlayerRedFlag.png', bluePlayer.getRectX(), bluePlayer.getRectY(), True, bluePlayer.getDirection(), bluePlayer.getLives())  # redeclaring the bluePlayer with a new sprite of them with the flag, and setting the hasFlag value to true
+            bluePlayer = BluePlayer('Sprites/Players/BluePlayerRedFlag.png', bluePlayer.getRectX(),
+                                    bluePlayer.getRectY(), True, bluePlayer.getDirection(),
+                                    bluePlayer.getLives())  # redeclaring the bluePlayer with a new sprite of them with the flag, and setting the hasFlag value to true
 
     bluePlayerWin = pygame.sprite.spritecollide(bluePlayer, homebases, False)  # checking if the bluePlayer collides with any homeBase items
     for item in bluePlayerWin:  # iterating through the list of homebases that it touches
@@ -94,14 +101,14 @@ while True:  # running a game loop
 
     players = pygame.sprite.Group([bluePlayer, redPlayer])  # redeclaring the group of players to make sure they are up to date
 
-    guns.update(keysPressed) # meant to update the locations of bullets when shot
+    guns.update()
     players.update(keysPressed)  # updating the locations of the players on screen
     window.fill(colours['WHITE'])  # refilling the background
 
-
     homebases.draw(window)  # drawing the home bases
+    guns.draw(window)
     flags.draw(window)  # drawing the flags
     players.draw(window)  # drawing the players
-    guns.draw(window) # meant to draw the bullets to the screen
 
+    clock.tick(FPS)
     pygame.display.flip()  # redrawing the screen and iterating through

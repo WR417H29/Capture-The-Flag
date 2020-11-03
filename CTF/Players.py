@@ -9,6 +9,7 @@ class Player(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)  # initialising parent class
         self.image = pygame.image.load(img)  # loading sprite
         self.rect = self.image.get_rect()  # getting the size of the image
+        self.arrowOG = pygame.image.load('Sprites/Extra/Arrow.png')
         self.direction = direction  # declaring the direction of the player
         self.controls = {'forward': fwd, 'backward': bwd, 'clockwise': cw,
                          'counterclockwise': ccw}  # declaring the controls
@@ -16,6 +17,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.x, self.rect.y = self.spawn['x'], self.spawn['y']  # setting the spawn
         self.hasFlag = hasFlag
         self.lives = lives
+        self.arrow = self.arrowOG
 
     def update(self, keysPressed):
         # ~ Movement ~ #
@@ -49,14 +51,17 @@ class Player(pygame.sprite.Sprite):
 
         time.sleep(0.05)
 
-    def draw(self, screen):
-        screen.blit(self.image, self.rect)  # drawing the players to the screen
-
     def getRectX(self):
         return self.rect.x
 
+    def getCenterX(self):
+        return self.rect.centerx
+
     def getRectY(self):
         return self.rect.y
+
+    def getCenterY(self):
+        return self.rect.centery
 
     def getHasflag(self):
         return self.hasFlag
@@ -66,6 +71,18 @@ class Player(pygame.sprite.Sprite):
 
     def getLives(self):
         return self.lives
+
+    def draw(self, screen):
+        screen.blit(self.image, self.rect)  # drawing the players to the screen
+        if self.direction == 0:
+            self.arrow = pygame.transform.rotate(self.arrowOG, 0)
+        if self.direction == 1:
+            self.arrow = pygame.transform.rotate(self.arrowOG, -90)
+        if self.direction == 2:
+            self.arrow = pygame.transform.rotate(self.arrowOG, 180)
+        if self.direction == 3:
+            self.arrow = pygame.transform.rotate(self.arrowOG, 90)
+        screen.blit(self.arrow, (self.rect.x, self.rect.top))
 
 
 class BluePlayer(Player):
@@ -79,6 +96,6 @@ class BluePlayer(Player):
 class RedPlayer(Player):
     def __init__(self, img, spawnX, spawnY, hasFlag, direction, lives):
         Player.__init__(self, img,
-                        pygame.locals.K_UP, pygame.locals.K_DOWN,
-                        pygame.locals.K_RIGHT, pygame.locals.K_LEFT, spawnX, spawnY, direction,
+                        pygame.locals.K_i, pygame.locals.K_k,
+                        pygame.locals.K_l, pygame.locals.K_j, spawnX, spawnY, direction,
                         hasFlag, lives)  # initialising the parent class
