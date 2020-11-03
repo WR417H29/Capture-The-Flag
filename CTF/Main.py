@@ -88,17 +88,25 @@ while True:  # running a game loop
             bluePlayer.updateImage('Sprites/Players/BluePlayerRight.png')
             redPlayer.updateImage('Sprites/Players/RedPlayerLeft.png')
         if bluePlayer.getHasflag() or redPlayer.getHasflag():
-            bluePlayer.updateImage('Sprites/Players/BluePlayerRedFlag.png')
-            redPlayer.updateImage('Sprites/Players/RedPlayerBlueFlag.png')
+            if bluePlayer.getHasflag():
+                bluePlayer.updateImage('Sprites/Players/BluePlayerRedFlag.png')
+                redPlayer.updateImage('Sprites/Players/RedPlayerLeft.png')
+            if redPlayer.getHasflag():
+                bluePlayer.updateImage('Sprites/Players/BluePlayerRight.png')
+                redPlayer.updateImage('Sprites/Players/RedPlayerBlueFlag.png')
 
     if bluePlayer.getRectX() > redPlayer.getRectX():  # if the red player is on the left hand side of the blue player, change the sprites to look at each other
         if not bluePlayer.getHasflag() or not redPlayer.getHasflag():
             bluePlayer.updateImage('Sprites/Players/BluePlayerLeft.png')
             redPlayer.updateImage('Sprites/Players/RedPlayerRight.png')
         if bluePlayer.getHasflag() or redPlayer.getHasflag():
-            bluePlayer.updateImage('Sprites/Players/BluePlayerRedFlag.png')
-            redPlayer.updateImage('Sprites/Players/RedPlayerBlueFlag.png')
-    # ~ fix sprite swap ~ #
+            if bluePlayer.getHasflag():
+                bluePlayer.updateImage('Sprites/Players/BluePlayerRedFlag.png')
+                redPlayer.updateImage('Sprites/Players/RedPlayerRight.png')
+            if redPlayer.getHasflag():
+                bluePlayer.updateImage('Sprites/Players/BluePlayerLeft.png')
+                redPlayer.updateImage('Sprites/Players/RedPlayerBlueFlag.png')
+
     players = pygame.sprite.Group([bluePlayer, redPlayer])  # redeclaring the group of players to make sure they are up to date
 
     guns.update()
