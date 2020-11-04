@@ -1,6 +1,5 @@
-import pygame
 import pygame.locals
-import time
+
 
 class HomeBase(pygame.sprite.Sprite):
     def __init__(self, img, spawnX, spawnY):

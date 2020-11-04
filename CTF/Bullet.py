@@ -1,6 +1,4 @@
-import pygame
 import pygame.locals
-import time
 
 
 class Bullets(pygame.sprite.Sprite):

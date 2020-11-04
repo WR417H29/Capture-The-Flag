@@ -1,6 +1,5 @@
 import time
 
-import pygame
 import pygame.locals
 
 
@@ -9,7 +8,6 @@ class Player(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)  # initialising parent class
         self.image = pygame.image.load(img)  # loading sprite
         self.rect = self.image.get_rect()  # getting the size of the image
-        self.arrowOG = pygame.image.load('Sprites/Extra/Arrow.png')
         self.direction = direction  # declaring the direction of the player
         self.controls = {'forward': fwd, 'backward': bwd, 'clockwise': cw,
                          'counterclockwise': ccw}  # declaring the controls
@@ -17,7 +15,6 @@ class Player(pygame.sprite.Sprite):
         self.rect.x, self.rect.y = spawnX, spawnY  # setting the spawn
         self.hasFlag = hasFlag
         self.lives = lives
-        self.arrow = self.arrowOG
 
     def update(self, keysPressed):
         # ~ Movement ~ #
@@ -77,17 +74,7 @@ class Player(pygame.sprite.Sprite):
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)  # drawing the players to the screen
-        '''
-        if self.direction == 0:
-            self.arrow = pygame.transform.rotate(self.arrowOG, 0)
-        if self.direction == 1:
-            self.arrow = pygame.transform.rotate(self.arrowOG, -90)
-        if self.direction == 2:
-            self.arrow = pygame.transform.rotate(self.arrowOG, 180)
-        if self.direction == 3:
-            self.arrow = pygame.transform.rotate(self.arrowOG, 90)
-        screen.blit(self.arrow, (self.rect.x, self.rect.top))
-        '''
+
 
 class BluePlayer(Player):
     def __init__(self, img, spawnX, spawnY, hasFlag, direction, lives):

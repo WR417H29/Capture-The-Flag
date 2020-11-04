@@ -20,7 +20,7 @@ window = pygame.display.set_mode([800, 800])  # setting the size of the window
 pygame.display.set_caption('Capture the Flag')  # setting the name of the window
 pygame.display.set_icon(pygame.image.load('Sprites/Flags/WhiteFlag.png'))  # setting the window icon
 window.fill(colours['WHITE'])  # filling the base screen with white
-FPS = 30
+FPS = 60
 clock = pygame.time.Clock()
 
 bluePlayer = BluePlayer('Sprites/Players/BluePlayerRight.png', 0, 0, False, 1,
@@ -38,8 +38,11 @@ redHomeBase = RedHomeBase()  # declaring redHomeBase as a RedHomeBase iteration
 homebases = pygame.sprite.Group([blueHomeBase, redHomeBase])  # creating a sprite group for the players
 
 guns = pygame.sprite.Group()
+blueShootTimer, redShootTimer = 0, 0
+# ~~~~~ Running the Game Loop ~~~~~ #
+while True:
 
-while True:  # running a game loop
+    # ~~~~~ Checking if the player tries to end the game ~~~~~ #
     for event in pygame.event.get():  # checking every event happening in the loop
         if event.type == pygame.QUIT:  # checking if the event happening is to quit the game
             quit()  # quitting the game
@@ -49,13 +52,19 @@ while True:  # running a game loop
 
     keysPressed = pygame.key.get_pressed()  # creating a list of pressed keys
 
-    if keysPressed[pygame.locals.K_q]:
-        guns.add(BlueBullets(bluePlayer.getCenterX(), (bluePlayer.getCenterY()-2), bluePlayer.getDirection()))
+    # ~~~~~ Checking if either player has shot ~~~~~ #
 
-    if keysPressed[pygame.locals.K_u]:
-        guns.add(RedBullets(redPlayer.getCenterX(), (redPlayer.getCenterY()-2), redPlayer.getDirection()))
+    if keysPressed[pygame.locals.K_q] and blueShootTimer >= 150:
+        guns.add(BlueBullets(bluePlayer.getCenterX(), (bluePlayer.getCenterY() - 2), bluePlayer.getDirection()))
+        blueShootTimer = 0
 
-    blueFlagGrab = pygame.sprite.spritecollide(blueFlag, players, False)  # checking if the blueFlag has collided with any player Sprites
+    if keysPressed[pygame.locals.K_u] and redShootTimer >= 150:
+        guns.add(RedBullets(redPlayer.getCenterX(), (redPlayer.getCenterY() - 2), redPlayer.getDirection()))
+        redShootTimer = 0
+
+    # ~~~~~ Checking if either play has touched the enemy player's flag ~~~~~ #
+
+    blueFlagGrab = pygame.sprite.spritecollide(blueFlag, players, False)
     for item in blueFlagGrab:  # iterating through the list of players touching it
         if item == redPlayer:  # if the player is the red player
             blueFlag.kill()  # deleting the blueFlag sprite iteration
@@ -63,7 +72,7 @@ while True:  # running a game loop
                                   True, redPlayer.getDirection(),
                                   redPlayer.getLives())  # redeclaring the redPlayer with a new sprite of them with the flag, and setting the hasFlag value to true
 
-    redFlagGrab = pygame.sprite.spritecollide(redFlag, players, False)  # checking if the redFlag has collided with any player sprites
+    redFlagGrab = pygame.sprite.spritecollide(redFlag, players, False)
     for item in redFlagGrab:  # iterating through the list of players touching it
         if item == bluePlayer:  # if the player is the blue player
             redFlag.kill()  # deleting the redFlag sprite iteration
@@ -71,20 +80,24 @@ while True:  # running a game loop
                                     bluePlayer.getRectY(), True, bluePlayer.getDirection(),
                                     bluePlayer.getLives())  # redeclaring the bluePlayer with a new sprite of them with the flag, and setting the hasFlag value to true
 
-    bluePlayerWin = pygame.sprite.spritecollide(bluePlayer, homebases, False)  # checking if the bluePlayer collides with any homeBase items
-    for item in bluePlayerWin:  # iterating through the list of homebases that it touches
-        if item == blueHomeBase and bluePlayer.getHasflag():  # if the homeBase being touched is blue, and the value of the hasFlag value is true
-            print('Blue Wins')  # declaring blue as the winner
-            quit()  # ending the program
+    # ~~~~~ Checking if either player beats the win conditions ~~~~~ #
 
-    redPlayerWin = pygame.sprite.spritecollide(redPlayer, homebases, False)  # checking if the redPlayer collides with any homeBase items
-    for item in redPlayerWin:  # iterating through the list of homebases that it touches
-        if item == redHomeBase and redPlayer.getHasflag():  # if the homeBase being touched is red, and the value of the hasFlag value is true
-            print('Red Wins')  # declaring red as the winner
-            quit()  # ending the program
+    bluePlayerWin = pygame.sprite.spritecollide(bluePlayer, homebases, False)
+    for item in bluePlayerWin:
+        if item == blueHomeBase and bluePlayer.getHasflag():
+            print('Blue Wins')
+            quit()
 
-    if bluePlayer.getRectX() < redPlayer.getRectX():  # if the blue player is on the left hand side of the red player, change the sprites to look at each other
-        if not bluePlayer.getHasflag() or not redPlayer.getHasflag():
+    redPlayerWin = pygame.sprite.spritecollide(redPlayer, homebases, False)
+    for item in redPlayerWin:
+        if item == redHomeBase and redPlayer.getHasflag():
+            print('Red Wins')
+            quit()
+
+    # ~~~~~ Changing Player Direction Based on the Location of Both Players ~~~~~ #
+
+    if bluePlayer.getRectX() < redPlayer.getRectX():
+        if not bluePlayer.getHasflag() and not redPlayer.getHasflag():
             bluePlayer.updateImage('Sprites/Players/BluePlayerRight.png')
             redPlayer.updateImage('Sprites/Players/RedPlayerLeft.png')
         if bluePlayer.getHasflag() or redPlayer.getHasflag():
@@ -95,8 +108,8 @@ while True:  # running a game loop
                 bluePlayer.updateImage('Sprites/Players/BluePlayerRight.png')
                 redPlayer.updateImage('Sprites/Players/RedPlayerBlueFlag.png')
 
-    if bluePlayer.getRectX() > redPlayer.getRectX():  # if the red player is on the left hand side of the blue player, change the sprites to look at each other
-        if not bluePlayer.getHasflag() or not redPlayer.getHasflag():
+    if bluePlayer.getRectX() > redPlayer.getRectX():
+        if not bluePlayer.getHasflag() and not redPlayer.getHasflag():
             bluePlayer.updateImage('Sprites/Players/BluePlayerLeft.png')
             redPlayer.updateImage('Sprites/Players/RedPlayerRight.png')
         if bluePlayer.getHasflag() or redPlayer.getHasflag():
@@ -107,16 +120,25 @@ while True:  # running a game loop
                 bluePlayer.updateImage('Sprites/Players/BluePlayerLeft.png')
                 redPlayer.updateImage('Sprites/Players/RedPlayerBlueFlag.png')
 
-    players = pygame.sprite.Group([bluePlayer, redPlayer])  # redeclaring the group of players to make sure they are up to date
+    # ~~~~~ Updating Moving Sprites ~~~~~ #
 
     guns.update()
-    players.update(keysPressed)  # updating the locations of the players on screen
-    window.fill(colours['WHITE'])  # refilling the background
+    players.update(keysPressed)
 
-    homebases.draw(window)  # drawing the home bases
+    # ~~~~~ Drawing the Assets to the Screen ~~~~~ #
+
+    window.fill(colours['WHITE'])
+    homebases.draw(window)
     guns.draw(window)
-    flags.draw(window)  # drawing the flags
-    players.draw(window)  # drawing the players
+    flags.draw(window)
+    players.draw(window)
+
+    # ~~~~~ Incrementing the gun cooldowns ~~~~~ #
+
+    blueShootTimer += 10
+    redShootTimer += 10
+
+    # ~~~~~ Setting FPS and Refreshing the Screen ~~~~~ #
 
     clock.tick(FPS)
-    pygame.display.flip()  # redrawing the screen and iterating through
+    pygame.display.flip()

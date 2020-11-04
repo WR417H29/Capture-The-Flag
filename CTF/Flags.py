@@ -1,6 +1,5 @@
-import pygame
 import pygame.locals
-import time
+
 
 class Flag(pygame.sprite.Sprite):
     def __init__(self, img, spawnX, spawnY):
