@@ -1,10 +1,10 @@
+# ~~~~~ Importing Pygame and Classes ~~~~~ #
+
 import pygame.locals
 from Bullet import BlueBullets, RedBullets
 from Flags import BlueFlag, RedFlag
 from Homebase import BlueHomeBase, RedHomeBase
 from Players import BluePlayer, RedPlayer
-
-# importing all the necessary classes and behaviours
 
 colours = {
     'WHITE': (255, 255, 255),
@@ -14,35 +14,46 @@ colours = {
     'BLUE': (0, 0, 255),
     'PURPLE': (255, 0, 255),
     'ORANGE': (255, 128, 0)
-}  # defining colours for later use
+}  # Defining Colours for later use
 
-window = pygame.display.set_mode([800, 800])  # setting the size of the window
-pygame.display.set_caption('Capture the Flag')  # setting the name of the window
-pygame.display.set_icon(pygame.image.load('Sprites/Flags/WhiteFlag.png'))  # setting the window icon
-window.fill(colours['WHITE'])  # filling the base screen with white
+# ~~~~~ Setting the basics of the game window ~~~~~ #
+
+window = pygame.display.set_mode([800, 800])
+pygame.display.set_caption('Capture the Flag')
+pygame.display.set_icon(pygame.image.load('Sprites/Flags/WhiteFlag.png'))
+window.fill(colours['WHITE'])
 FPS = 60
 clock = pygame.time.Clock()
 
-bluePlayer = BluePlayer('Sprites/Players/BluePlayerRight.png', 0, 0, False, 1,
-                        3)  # declaring bluePlayer as a BluePlayer iteration
-redPlayer = RedPlayer('Sprites/Players/RedPlayerLeft.png', 768, 768, False, 3,
-                      3)  # declaring redPlayer as a RedPlayer iteration
-players = pygame.sprite.Group([bluePlayer, redPlayer])  # creating a sprite group for the players
+# ~~~~~ Creating the Players ~~~~~ #
 
-blueFlag = BlueFlag()  # declaring blueFlag as a BlueFlag iteration
-redFlag = RedFlag()  # declaring redFlag as a RedFlag iteration
-flags = pygame.sprite.Group([blueFlag, redFlag])  # creating a sprite group for the players
+bluePlayer = BluePlayer('Sprites/Players/BluePlayerRight.png', 0, 0, False, 1, 3)
+redPlayer = RedPlayer('Sprites/Players/RedPlayerLeft.png', 768, 768, False, 3, 3)
+players = pygame.sprite.Group([bluePlayer, redPlayer])
 
-blueHomeBase = BlueHomeBase()  # declaring blueHomeBase as a BlueHomeBase iteration
-redHomeBase = RedHomeBase()  # declaring redHomeBase as a RedHomeBase iteration
-homebases = pygame.sprite.Group([blueHomeBase, redHomeBase])  # creating a sprite group for the players
+# ~~~~~ Creating the Flags ~~~~~ #
+
+blueFlag = BlueFlag()
+redFlag = RedFlag()
+flags = pygame.sprite.Group([blueFlag, redFlag])
+
+# ~~~~~ Creating the Home Bases ~~~~~ #
+
+blueHomeBase = BlueHomeBase()
+redHomeBase = RedHomeBase()
+homebases = pygame.sprite.Group([blueHomeBase, redHomeBase])
+
+# ~~~~~ Creating the Guns and Timers ~~~~~ #
 
 guns = pygame.sprite.Group()
 blueShootTimer, redShootTimer = 0, 0
+
 # ~~~~~ Running the Game Loop ~~~~~ #
+
 while True:
 
     # ~~~~~ Checking if the player tries to end the game ~~~~~ #
+
     for event in pygame.event.get():  # checking every event happening in the loop
         if event.type == pygame.QUIT:  # checking if the event happening is to quit the game
             quit()  # quitting the game
@@ -65,20 +76,16 @@ while True:
     # ~~~~~ Checking if either play has touched the enemy player's flag ~~~~~ #
 
     blueFlagGrab = pygame.sprite.spritecollide(blueFlag, players, False)
-    for item in blueFlagGrab:  # iterating through the list of players touching it
-        if item == redPlayer:  # if the player is the red player
-            blueFlag.kill()  # deleting the blueFlag sprite iteration
-            redPlayer = RedPlayer('Sprites/Players/RedPlayerBlueFlag.png', redPlayer.getRectX(), redPlayer.getRectY(),
-                                  True, redPlayer.getDirection(),
-                                  redPlayer.getLives())  # redeclaring the redPlayer with a new sprite of them with the flag, and setting the hasFlag value to true
+    for item in blueFlagGrab:
+        if item == redPlayer:
+            blueFlag.kill()
+            redPlayer.setImage('Sprites/Players/RedPlayerBlueFlag.png')
 
     redFlagGrab = pygame.sprite.spritecollide(redFlag, players, False)
-    for item in redFlagGrab:  # iterating through the list of players touching it
-        if item == bluePlayer:  # if the player is the blue player
-            redFlag.kill()  # deleting the redFlag sprite iteration
-            bluePlayer = BluePlayer('Sprites/Players/BluePlayerRedFlag.png', bluePlayer.getRectX(),
-                                    bluePlayer.getRectY(), True, bluePlayer.getDirection(),
-                                    bluePlayer.getLives())  # redeclaring the bluePlayer with a new sprite of them with the flag, and setting the hasFlag value to true
+    for item in redFlagGrab:
+        if item == bluePlayer:
+            redFlag.kill()
+            bluePlayer.setImage('Sprites/Players/BluePlayerRedFlag.png')
 
     # ~~~~~ Checking if either player beats the win conditions ~~~~~ #
 
@@ -96,29 +103,35 @@ while True:
 
     # ~~~~~ Changing Player Direction Based on the Location of Both Players ~~~~~ #
 
+    '''
     if bluePlayer.getRectX() < redPlayer.getRectX():
         if not bluePlayer.getHasflag() and not redPlayer.getHasflag():
-            bluePlayer.updateImage('Sprites/Players/BluePlayerRight.png')
-            redPlayer.updateImage('Sprites/Players/RedPlayerLeft.png')
-        if bluePlayer.getHasflag() or redPlayer.getHasflag():
-            if bluePlayer.getHasflag():
-                bluePlayer.updateImage('Sprites/Players/BluePlayerRedFlag.png')
-                redPlayer.updateImage('Sprites/Players/RedPlayerLeft.png')
-            if redPlayer.getHasflag():
-                bluePlayer.updateImage('Sprites/Players/BluePlayerRight.png')
-                redPlayer.updateImage('Sprites/Players/RedPlayerBlueFlag.png')
+            bluePlayer.setImage('Sprites/Players/BluePlayerRight.png')
+            redPlayer.setImage('Sprites/Players/RedPlayerLeft.png')
+        if not bluePlayer.getHasflag() and redPlayer.getHasflag():
+            bluePlayer.setImage('Sprites/Players/BluePlayerRight.png')
+            redPlayer.setImage('Sprites/Players/RedPlayerBlueFlag.png')
+        if bluePlayer.getHasflag() and not redPlayer.getHasflag():
+            bluePlayer.setImage('Sprites/Players/BluePlayerRedFlag.png')
+            redPlayer.setImage('Sprites/Players/RedPlayerLeft.png')
+        if bluePlayer.getHasflag() and redPlayer.getHasflag():
+            bluePlayer.setImage('Sprites/Players/BluePlayerRedFlag.png')
+            redPlayer.setImage('Sprites/Players/RedPlayerBlueFlag.png')
 
     if bluePlayer.getRectX() > redPlayer.getRectX():
         if not bluePlayer.getHasflag() and not redPlayer.getHasflag():
-            bluePlayer.updateImage('Sprites/Players/BluePlayerLeft.png')
-            redPlayer.updateImage('Sprites/Players/RedPlayerRight.png')
-        if bluePlayer.getHasflag() or redPlayer.getHasflag():
-            if bluePlayer.getHasflag():
-                bluePlayer.updateImage('Sprites/Players/BluePlayerRedFlag.png')
-                redPlayer.updateImage('Sprites/Players/RedPlayerRight.png')
-            if redPlayer.getHasflag():
-                bluePlayer.updateImage('Sprites/Players/BluePlayerLeft.png')
-                redPlayer.updateImage('Sprites/Players/RedPlayerBlueFlag.png')
+            bluePlayer.setImage('Sprites/Players/BluePlayerLeft.png')
+            redPlayer.setImage('Sprites/Players/RedPlayerRight.png')
+        if not bluePlayer.getHasflag() and redPlayer.getHasflag():
+            bluePlayer.setImage('Sprites/Players/BluePlayerLeft.png')
+            redPlayer.setImage('Sprites/Players/RedPlayerBlueFlag.png')
+        if bluePlayer.getHasflag() and not redPlayer.getHasflag():
+            bluePlayer.setImage('Sprites/Players/BluePlayerRedFlag.png')
+            redPlayer.setImage('Sprites/Players/RedPlayerRight.png')
+        if bluePlayer.getHasflag() and redPlayer.getHasflag():
+            bluePlayer.setImage('Sprites/Players/BluePlayerRedFlag.png')
+            redPlayer.setImage('Sprites/Players/RedPlayerBlueFlag.png')
+    '''
 
     # ~~~~~ Updating Moving Sprites ~~~~~ #
 

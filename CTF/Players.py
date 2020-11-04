@@ -48,7 +48,7 @@ class Player(pygame.sprite.Sprite):
 
         time.sleep(0.05)
 
-    def updateImage(self, image):
+    def setImage(self, image):
         self.image = pygame.image.load(image)
 
     def getRectX(self):
