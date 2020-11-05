@@ -7,17 +7,17 @@ class Flag(pygame.sprite.Sprite):
         self.image = pygame.image.load(img)
         self.rect = self.image.get_rect()
         self.spawn = {'x': spawnX, 'y': spawnY}
-        self.rect.x, self.rect.y = self.spawn['x'], self.spawn['y']  # setting the spawn
+        self.rect.x, self.rect.y = self.spawn['x'], self.spawn['y']  # SETTING THE SPAWN
 
     def draw(self, screen):
-        screen.blit(self.image, self.rect)  # drawing the flags to the screen
+        screen.blit(self.image, self.rect)  # DRAWING THE FLAGS TO THE SCREEN
 
 
 class BlueFlag(Flag):
     def __init__(self):
-        Flag.__init__(self, 'Sprites/Flags/BlueFlag.png', 0, 0)
+        Flag.__init__(self, 'CTF/Sprites/Flags/BlueFlag.png', 0, 0)
 
 
 class RedFlag(Flag):
     def __init__(self):
-        Flag.__init__(self, 'Sprites/Flags/RedFlag.png', 768, 768)
+        Flag.__init__(self, 'CTF/Sprites/Flags/RedFlag.png', 768, 768)

@@ -4,7 +4,7 @@ import pygame.locals
 class Bullets(pygame.sprite.Sprite):
     def __init__(self, SpawnX, SpawnY, Direction):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load('Sprites/Extra/Bullet.png')
+        self.image = pygame.image.load('CTF/Sprites/Extra/Bullet.png')
         self.rect = self.image.get_rect()
         self.spawn = {'x': SpawnX, 'y': SpawnY}
         self.rect.x, self.rect.y = self.spawn['x'], self.spawn['y']
