@@ -5,7 +5,6 @@ from Flags import BlueFlag, RedFlag
 from Homebase import BlueHomeBase, RedHomeBase
 from Players import BluePlayer, RedPlayer
 import pygame
-#import pygame.locals
 
 colours = {
     'WHITE': (255, 255, 255),
