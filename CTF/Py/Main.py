@@ -61,7 +61,7 @@ while True:
             if event.key == pygame.locals.K_ESCAPE:  # IF THE KEY IS ESCAPE CLOSING THE GAME
                 quit()  # QUIT
 
-    keysPressed = pygame.key.get_pressed()  # CREATING A LIST OF PRESSED KEYS
+    keysPressed = pygame.key.get_pressed() # CREATING A LIST OF PRESSED KEYS
 
     # ~~~~~ CHECKING IF EITHER PLAYER HAS SHOT ~~~~~ #
 
