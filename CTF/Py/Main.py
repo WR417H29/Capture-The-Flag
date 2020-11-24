@@ -22,7 +22,7 @@ window = pygame.display.set_mode([800, 800])
 pygame.display.set_caption('Capture the Flag')
 pygame.display.set_icon(pygame.image.load('CTF/Sprites/Flags/WhiteFlag.png'))
 window.fill(colours['WHITE'])
-FPS = 30
+FPS = 60
 clock = pygame.time.Clock()
 
 # ~~~~~ CREATING THE PLAYERS ~~~~~ #
